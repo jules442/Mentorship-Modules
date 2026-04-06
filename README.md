@@ -1,20 +1,32 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Indigo Luna Mentorship Modules
 
-# Run and deploy your AI Studio app
+Interactive training modules for new managers at Indigo Luna. Each module covers a core leadership topic and includes reading material, exercises, and a reflection form that submits responses via email.
 
-This contains everything you need to run your app locally.
+## Structure
 
-View your app in AI Studio: https://ai.studio/apps/drive/1W4DZU9StgqD7fp7ch7JCpuVFxGamU4Hr
+- **`module-1-leadership-vision.html`** — Standalone HTML module on Leadership, Vision & Goal Setting. Includes 7 sections, 22 reflection questions, localStorage auto-save, and form submission via Google Apps Script.
+- **`styles.css`** — Shared stylesheet used across all module HTML files.
+- **`deploy.sh`** — Script to deploy modules to Google Cloud Storage.
 
-## Run Locally
+## Deployment
 
-**Prerequisites:**  Node.js
+Modules are hosted on Google Cloud Storage and accessible via a public URL.
 
+```bash
+bash deploy.sh
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Live URL: `https://storage.googleapis.com/indigo-luna-mentorship-program/module-1-leadership-vision.html`
+
+## Email Integration
+
+Form submissions are sent via Google Apps Script. Responses include the question title and answer for each field and are delivered to a designated email inbox.
+
+## React App (optional)
+
+A separate slide-based React/Vite app also exists in this repo.
+
+**Prerequisites:** Node.js
+
+1. `npm install`
+2. `npm run dev`
