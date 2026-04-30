@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 2: Communication Skills | Indigo Luna Manager Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .info-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 25px 0; }
+
+        .pillar-card { background: var(--il-white); border: 1px solid var(--il-border); border-radius: 10px; padding: 22px; border-top: 3px solid var(--il-sage); }
+        .pillar-card.warm { border-top-color: var(--il-bronze); }
+        .pillar-card.mid { border-top-color: var(--il-taupe); }
+        .pillar-card h4 { margin-top: 0; margin-bottom: 10px; font-size: 1em; font-weight: 600; }
+        .pillar-card p { font-size: 0.9em; margin-bottom: 0; line-height: 1.65; }
+
+        .level-selector { display: grid; grid-template-columns: 1fr 28px 1fr 28px 1fr; gap: 0; margin: 20px 0 28px; align-items: stretch; }
+        .level-arrow { display: flex; align-items: center; justify-content: center; font-size: 1.3em; color: var(--il-border); padding-top: 40px; user-select: none; }
+        .level-card { background: var(--il-white); border: 2px solid var(--il-border); border-top: 4px solid var(--il-border); border-radius: 12px; padding: 22px 20px; cursor: pointer; transition: all 0.25s; position: relative; }
+        .level-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+        .level-card:nth-child(1) { border-top-color: var(--il-taupe); }
+        .level-card:nth-child(1) .level-badge { background: rgba(114,102,95,0.1); color: var(--il-taupe); border-color: var(--il-taupe); }
+        .level-card:nth-child(1) .level-tier { color: var(--il-taupe); }
+        .level-card:nth-child(1):hover { border-color: var(--il-taupe); }
+        .level-card:nth-child(1).selected { border-color: var(--il-taupe); background: rgba(114,102,95,0.05); }
+        .level-card:nth-child(1).selected .level-badge { background: var(--il-taupe); color: white; }
+        .level-card:nth-child(3) { border-top-color: var(--il-sage); }
+        .level-card:nth-child(3) .level-badge { background: rgba(165,168,143,0.12); color: #6b7a5f; border-color: var(--il-sage); }
+        .level-card:nth-child(3) .level-tier { color: var(--il-sage); }
+        .level-card:nth-child(3):hover { border-color: var(--il-sage); }
+        .level-card:nth-child(3).selected { border-color: var(--il-sage); background: rgba(165,168,143,0.06); }
+        .level-card:nth-child(3).selected .level-badge { background: var(--il-sage); color: white; }
+        .level-card:nth-child(5) { border-top-color: var(--il-bronze); }
+        .level-card:nth-child(5) .level-badge { background: rgba(177,151,78,0.12); color: var(--il-bronze); border-color: var(--il-bronze); }
+        .level-card:nth-child(5) .level-tier { color: var(--il-bronze); }
+        .level-card:nth-child(5):hover { border-color: var(--il-bronze); }
+        .level-card:nth-child(5).selected { border-color: var(--il-bronze); background: rgba(177,151,78,0.05); }
+        .level-card:nth-child(5).selected .level-badge { background: var(--il-bronze); color: white; }
+        .level-badge { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--il-border); font-weight: 700; font-size: 1em; margin-bottom: 10px; transition: all 0.25s; }
+        .level-tier { display: block; font-size: 0.72em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; opacity: 0.85; }
+        .level-card h4 { margin: 0 0 8px; font-size: 0.95em; font-weight: 600; }
+        .level-card p { font-size: 0.88em; line-height: 1.6; color: var(--il-gray); margin-bottom: 0; }
+        .level-my-default { display: none; position: absolute; top: 11px; right: 11px; background: var(--il-sage); color: white; font-size: 0.72em; padding: 3px 9px; border-radius: 20px; }
+        .level-card.selected .level-my-default { display: inline-block; }
+
+        .tk-diagram { margin: 28px 0; background: var(--il-white); border: 1px solid var(--il-border); border-radius: 12px; overflow: hidden; }
+        .tk-diagram-header { padding: 16px 22px; border-bottom: 1px solid var(--il-border); font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.1em; color: var(--il-gray); text-align: center; }
+        .tk-grid-layout { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; position: relative; }
+        .tk-axis-y { grid-column: 1 / 3; display: flex; justify-content: space-between; padding: 10px 20px 4px; font-size: 0.75em; color: var(--il-gray); letter-spacing: 0.05em; }
+        .tk-cell { padding: 18px 20px; border: 1px solid var(--il-border); margin: 1px; transition: all 0.2s; cursor: default; }
+        .tk-cell:hover { background: rgba(165,168,143,0.05); }
+        .tk-cell.highlight { background: rgba(165,168,143,0.08); border-color: var(--il-sage); }
+        .tk-cell-name { font-weight: 600; font-size: 0.95em; margin-bottom: 6px; color: var(--il-taupe); display: flex; align-items: center; gap: 8px; }
+        .tk-cell-axes { font-size: 0.78em; color: var(--il-gray); font-style: italic; margin-bottom: 8px; }
+        .tk-cell-desc { font-size: 0.85em; line-height: 1.55; color: var(--il-taupe); margin-bottom: 6px; }
+        .tk-cell-when { font-size: 0.8em; color: var(--il-sage); font-style: italic; }
+        .tk-cell-center { grid-column: 1 / 3; background: rgba(177,151,78,0.04); border-top: 1px solid var(--il-border); border-bottom: 1px solid var(--il-border); padding: 16px 20px; display: flex; align-items: center; gap: 20px; }
+        .tk-cell-center .tk-cell-name { margin-bottom: 0; }
+        .tk-cell-center .tk-center-text { flex: 1; }
+        .tk-cell-center .tk-cell-desc { margin-bottom: 0; }
+        .tk-axis-x { grid-column: 1 / 3; display: flex; justify-content: space-between; padding: 6px 20px 12px; font-size: 0.75em; color: var(--il-gray); letter-spacing: 0.05em; }
+        .style-emoji { font-size: 1.1em; }
+
+        .conflict-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 20px 0 10px; }
+        .conflict-card { background: var(--il-white); border: 2px solid var(--il-border); border-radius: 10px; padding: 18px 14px; cursor: pointer; text-align: center; transition: all 0.25s; position: relative; }
+        .conflict-card:hover { border-color: var(--il-sage); transform: translateY(-2px); box-shadow: 0 5px 14px rgba(165,168,143,0.15); }
+        .conflict-card.selected { border-color: var(--il-sage); background: rgba(165,168,143,0.07); }
+        .conflict-card.selected .conflict-card-icon { background: var(--il-sage); border-color: var(--il-sage); }
+        .conflict-card.selected .conflict-my-default { display: inline-block; }
+        .conflict-card-icon { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--il-border); display: flex; align-items: center; justify-content: center; font-size: 1.2em; margin: 0 auto 10px; transition: all 0.25s; }
+        .conflict-card-name { font-weight: 600; font-size: 0.9em; margin-bottom: 4px; }
+        .conflict-card-hint { font-size: 0.78em; color: var(--il-gray); line-height: 1.4; }
+        .conflict-my-default { display: none; position: absolute; top: 8px; right: 8px; background: var(--il-sage); color: white; font-size: 0.68em; padding: 2px 7px; border-radius: 20px; }
+        .conflict-selector-hint { font-size: 0.85em; color: var(--il-gray); margin-bottom: 12px; font-style: italic; }
+
+        .slider-container { margin: 30px 0; }
+
+        @media (max-width: 768px) {
+            .info-grid-3, .conflict-selector { grid-template-columns: 1fr; }
+            .level-selector { grid-template-columns: 1fr; }
+            .level-arrow { padding-top: 0; font-size: 1em; height: 24px; transform: rotate(90deg); }
+            .tk-grid-layout { grid-template-columns: 1fr; }
+            .tk-cell-center { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-content">
+        <div class="module-tag">Manager Training Programme</div>
+        <h1>Communication Skills</h1>
+        <p>Mastering transparent dialogue, active listening, and conflict resolution</p>
+    </div>
+</div>
+
+<div class="progress-wrapper">
+    <div class="progress-card">
+        <div class="progress-steps">
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+        </div>
+        <div class="progress-label">Section <span id="currentStep">1</span> of 7</div>
+    </div>
+</div>
+
+<div class="container">
+<form id="courseForm">
+
+    <!-- Intro -->
+    <div class="intro-section">
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-label">Your Name</div>
+                <input type="text" name="managerName" class="info-input" placeholder="e.g., Wayan" required>
+            </div>
+            <div class="info-card">
+                <div class="info-label">Your Department</div>
+                <input type="text" name="department" class="info-input" placeholder="e.g., Warehouse" required>
+            </div>
+        </div>
+        <div class="objectives">
+            <h3>What You'll Learn Today</h3>
+            <ul>
+                <li>Understand the three pillars of effective managerial communication</li>
+                <li>Develop active listening skills using the three levels of listening</li>
+                <li>Ask powerful, open-ended questions that unlock honest conversation</li>
+                <li>Give clear, specific feedback using the SBI method</li>
+                <li>Navigate conflict productively using the Thomas-Kilmann model</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ═══ PART 1 ═══ -->
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title">
+                <span class="accordion-number">Part One</span>
+                <h2 class="accordion-heading">Why Communication Matters for Managers</h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <span class="accordion-time">10 minutes</span>
+                <div class="accordion-icon">+</div>
+            </div>
+        </div>
+        <div class="accordion-content">
+            <div class="accordion-body">
+
+                <div class="subsection">
+                    <h3>If Leadership Is Direction, Communication Is the Journey</h3>
+                    <p>In Module 1, we explored how vision gives your team direction. But vision alone isn't enough — you need to bring people along on the journey. <strong>Communication is how that happens.</strong></p>
+                    <p>As a manager at Indigo Luna, you're navigating genuine complexity: coordinating across Indonesia and Australia, managing teams with diverse cultural backgrounds, and ensuring clarity when you can't always be face-to-face. The quality of your communication directly impacts team performance, morale, and your ability to scale.</p>
+                    <div class="callout callout-warm">
+                        <strong>Research shows managers spend 70–90% of their time communicating.</strong> Yet most receive little formal training in this skill. Communication is your highest-leverage tool — and it's one you can actively improve.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>The Cost of Poor Communication</h3>
+                    <p>In a fast-growing business like Indigo Luna, poor communication creates compounding problems that are much harder to fix the longer they go unaddressed.</p>
+                    <ul>
+                        <li><strong>Rework and delays:</strong> Unclear instructions lead to misaligned work. Teams waste time building the wrong thing, then rebuilding it.</li>
+                        <li><strong>Disengagement:</strong> When people don't feel heard, they stop contributing ideas. You lose the collective intelligence of your team.</li>
+                        <li><strong>Hidden problems:</strong> If your team doesn't trust you'll listen, they stop raising concerns. Small issues become crises.</li>
+                        <li><strong>Unresolved conflict:</strong> Avoided conflict festers. Productivity drops as people spend energy on interpersonal tension instead of their work.</li>
+                    </ul>
+                    <p>The good news? Communication is a <strong>skill you can learn and practise.</strong> This module gives you frameworks and techniques you can start using immediately.</p>
+                </div>
+
+                <div class="subsection">
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">1</span> Reflect on your current communication style. What is one communication challenge you are facing right now with your team?</label>
+                        <textarea name="q1_challenge" required placeholder="Example: My team often doesn't speak up in meetings, and I only find out about problems much later..."></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ PART 2 ═══ -->
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title">
+                <span class="accordion-number">Part Two</span>
+                <h2 class="accordion-heading">The 3 Pillars of Effective Communication</h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <span class="accordion-time">10 minutes</span>
+                <div class="accordion-icon">+</div>
+            </div>
+        </div>
+        <div class="accordion-content">
+            <div class="accordion-body">
+
+                <div class="subsection">
+                    <p>Great managerial communication rests on three foundational pillars. Master these, and you will handle 90% of situations effectively.</p>
+
+                    <div class="info-grid-3">
+                        <div class="pillar-card">
+                            <h4>1. Transparency</h4>
+                            <p>Sharing context, reasoning, and truth — even when it's uncomfortable. It's the foundation of trust.</p>
+                        </div>
+                        <div class="pillar-card warm">
+                            <h4>2. Active Listening</h4>
+                            <p>Fully receiving what someone is saying — not just waiting for your turn to talk. Rare, difficult, and transformative.</p>
+                        </div>
+                        <div class="pillar-card mid">
+                            <h4>3. Conflict Resolution</h4>
+                            <p>Resolving disagreements productively so the team can move forward. Conflict is data — it tells you where things are misaligned.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Pillar 1: Transparency</h3>
+                    <p>When you explain your reasoning, your team can fill in gaps, catch blind spots, and make better decisions when you're not in the room. When you hide information, people fill the void with anxiety and speculation.</p>
+
+                    <div class="example">
+                        <strong>What Transparency Looks Like at Indigo Luna</strong><br><br>
+                        <strong>Instead of:</strong> "We need to cut warehouse hours next month."<br><br>
+                        <strong>Try:</strong> "Let me share our situation. Revenue dipped 8% last month due to seasonal patterns we are still learning. We need to reduce warehouse hours by 15% in March to stay healthy. Here is the data I am looking at... What questions do you have?"
+                    </div>
+
+                    <p><strong>When to limit transparency:</strong> Personal employee issues, strategic decisions still in flux, or sensitive commercial information. The rule: default to transparency unless there's a clear reason not to share.</p>
+                </div>
+
+                <div class="subsection">
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">2</span> Of the three pillars — Transparency, Active Listening, Conflict Resolution — which is your strongest? Which needs the most work?</label>
+                        <textarea name="q2_pillars" required placeholder="Reflect honestly on your current strengths and growth areas..."></textarea>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">3</span> Think of a recent moment when you chose not to be fully transparent with your team. What was your reasoning? Looking back, was it the right call?</label>
+                        <textarea name="q3_transparency" required placeholder="No judgment — just reflection. What were you trying to protect, and what was the impact?"></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="brand-image-break">
+        <img src="https://drive.google.com/thumbnail?id=1NM_htVIz_kOQ14BH-C_ONYAHU-hI4fx6&sz=w1600" alt="Indigo Luna">
+    </div>
+
+    <!-- ═══ PART 3 ═══ -->
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title">
+                <span class="accordion-number">Part Three</span>
+                <h2 class="accordion-heading">Pillar 2: Active Listening</h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <span class="accordion-time">10 minutes</span>
+                <div class="accordion-icon">+</div>
+            </div>
+        </div>
+        <div class="accordion-content">
+            <div class="accordion-body">
+
+                <div class="subsection">
+                    <h3>The 3 Levels of Listening</h3>
+                    <p>Most people think they are good listeners. Most people are wrong. True listening is rare, difficult, and transformative. Click the level that most closely describes how you typically listen at work.</p>
+
+                    <div class="level-selector" id="levelSelector">
+                        <div class="level-card" onclick="selectLevel(this, 1)">
+                            <span class="level-my-default">My default</span>
+                            <div class="level-badge">1</div>
+                            <span class="level-tier">Most common</span>
+                            <h4>Internal Listening</h4>
+                            <p>Listening to respond, not to understand. Filtering what they say through your own experiences and agenda.</p>
+                        </div>
+                        <div class="level-arrow">&#8594;</div>
+                        <div class="level-card" onclick="selectLevel(this, 2)">
+                            <span class="level-my-default">My default</span>
+                            <div class="level-badge">2</div>
+                            <span class="level-tier">Active goal</span>
+                            <h4>Focused Listening</h4>
+                            <p>Full attention on the other person — words, tone, body language. Trying to understand before responding.</p>
+                        </div>
+                        <div class="level-arrow">&#8594;</div>
+                        <div class="level-card" onclick="selectLevel(this, 3)">
+                            <span class="level-my-default">My default</span>
+                            <div class="level-badge">3</div>
+                            <span class="level-tier">Mastery</span>
+                            <h4>Global Listening</h4>
+                            <p>Tuned into words, emotion, context, energy, and what is NOT being said. Spotting patterns across conversations.</p>
+                        </div>
+                    </div>
+                    <input type="hidden" name="q_level_selected" id="levelSelected">
+
+                    <div class="callout callout-warm">
+                        <strong>Your goal: spend more time at Levels 2 and 3.</strong> In important moments — one-on-ones, conflict, strategic conversations — aim for Level 2 at minimum. Notice when you drift to Level 1 (listening to respond), take a breath, and return to Level 2 (listening to understand).
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Techniques for Active Listening</h3>
+
+                    <h4>1. Paraphrasing</h4>
+                    <p>Restate what you heard in your own words. This confirms understanding and shows you are truly listening.</p>
+                    <p><strong>Example:</strong> "So what I'm hearing is that you feel the new process is adding extra steps without clear benefit to the customer. Is that right?"</p>
+
+                    <h4>2. Clarifying Questions</h4>
+                    <p>Ask to dig deeper, not to challenge. Your goal is to understand their thinking, not prove them wrong.</p>
+                    <p><strong>Good:</strong> "Can you help me understand what happened after that?"<br>
+                    <strong>Bad:</strong> "But didn't you already know the deadline?"</p>
+
+                    <h4>3. The Pause</h4>
+                    <p>After someone finishes speaking, wait 2–3 seconds before responding. This signals you're processing rather than reacting, gives them space to add more (often the most important things come after the pause), and slows the conversation so you both think more clearly.</p>
+
+                    <div class="example">
+                        <strong>Active Listening at Indigo Luna</strong><br><br>
+                        A warehouse team member: "The new inventory system is causing problems."<br><br>
+                        <strong>Level 1:</strong> "We just spent three months on that system. Let me explain how it works..." — You're defending, not listening.<br><br>
+                        <strong>Level 2:</strong> "Tell me more about what problems you're seeing." Pause. Listen fully. "So the scanner times out during busy periods, creating a backlog. Is that the core issue?"<br><br>
+                        <strong>Level 3:</strong> Same as Level 2, but you also notice: this is the third person this week raising the system. "Have others on your team noticed similar issues? I want to make sure we're hearing from everyone."
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">4</span> Which level do you usually listen at, and what tells you? What would shifting up one level look like for you in practice?</label>
+                        <textarea name="q4_listening" id="q4" required placeholder="Be honest — most of us default to Level 1. That is the starting point for improvement..."></textarea>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">5</span> Practise paraphrasing. Think of something a team member said recently. Write how you would paraphrase it back to confirm understanding.</label>
+                        <textarea name="q5_paraphrase" required placeholder="'So if I understand correctly, you are saying that...'"></textarea>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">6</span> Which active listening technique will you deliberately practise this week?</label>
+                        <textarea name="q6_technique" required placeholder="Describe the technique and how you will apply it in a real conversation..."></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ PART 4 ═══ -->
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title">
+                <span class="accordion-number">Part Four</span>
+                <h2 class="accordion-heading">Asking Powerful Questions</h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <span class="accordion-time">10 minutes</span>
+                <div class="accordion-icon">+</div>
+            </div>
+        </div>
+        <div class="accordion-content">
+            <div class="accordion-body">
+
+                <div class="subsection">
+                    <h3>Open-Ended vs Closed Questions</h3>
+                    <p>The quality of your questions determines the quality of information you receive. As a manager, you need questions that <strong>open up thinking</strong> rather than shut it down.</p>
+
+                    <div class="callout">
+                        <strong>Closed questions</strong> — answered with "yes," "no," or a single word. Useful for confirming facts; poor for understanding context.<br><br>
+                        "Did you finish the report?" / "Is the team happy?" / "Who made that decision?"<br><br>
+                        <strong>Problem:</strong> You get minimal information and signal you just want a quick answer, not a real conversation.
+                    </div>
+
+                    <div class="callout callout-warm">
+                        <strong>Open-ended questions</strong> — require thought and explanation. They invite context, reasoning, and concerns.<br><br>
+                        "What is your progress on the report, and what is blocking you?" / "How is the team feeling about the new process?" / "Walk me through how that decision got made."<br><br>
+                        <strong>Benefit:</strong> You learn what is really happening, uncover hidden problems, and show you genuinely want to understand.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>The Power of "What" and "How"</h3>
+                    <p>Start questions with "What" or "How" to naturally create open-ended questions. Avoid "Why" in tense situations — it can feel accusatory.</p>
+
+                    <div class="example">
+                        <strong>Why → What: A simple reframe</strong><br><br>
+                        "Why did you miss the deadline?" — Feels like blame. Puts people on the defensive.<br><br>
+                        "What got in the way of hitting the deadline?" — Feels like genuine curiosity. Invites honest explanation.
+                    </div>
+
+                    <h4>Questions for Different Situations</h4>
+                    <p><strong>To understand context:</strong> "What is the situation from your perspective?" / "How did this develop?" / "What have you tried so far?"</p>
+                    <p><strong>To uncover root causes:</strong> "What do you think is really driving this issue?" / "If we could fix one thing, what would have the biggest impact?"</p>
+                    <p><strong>To encourage ownership:</strong> "What do you think we should do?" / "How would you approach this if you were me?"</p>
+                    <p><strong>To test understanding:</strong> "Can you tell me what you heard me say?" / "What is still unclear?"</p>
+
+                    <div class="callout">
+                        <strong>Indigo Luna scenario:</strong> Your Indonesia team seems disengaged in video meetings — cameras off, minimal participation.<br><br>
+                        <strong>Weak:</strong> "Can everyone please turn cameras on?" — Closed. Doesn't address the root cause.<br><br>
+                        <strong>Powerful:</strong> In your next one-on-one: "I've noticed participation in team meetings has been quieter lately. What's your experience of those meetings? What would make them more valuable for you?"
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">7</span> Think of a situation where you recently asked a closed question. Rewrite it as an open-ended question using "What" or "How."</label>
+                        <textarea name="q7_rewrite" required placeholder="Original: 'Did you have any problems?'&#10;Rewritten: 'What challenges did you encounter?'"></textarea>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">8</span> Write three open-ended questions you could ask in your next one-on-one to better understand what is really happening with your team member.</label>
+                        <textarea name="q8_questions" required placeholder="1. What...&#10;2. How...&#10;3. What..."></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="brand-image-break">
+        <img src="https://drive.google.com/thumbnail?id=19oqa4uwP1HE2eSd47XPRLLTdMS8_AZ_E&sz=w1600" alt="Indigo Luna">
+    </div>
+
+    <!-- ═══ PART 5 ═══ -->
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title">
+                <span class="accordion-number">Part Five</span>
+                <h2 class="accordion-heading">Giving Effective Feedback</h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <span class="accordion-time">10 minutes</span>
+                <div class="accordion-icon">+</div>
+            </div>
+        </div>
+        <div class="accordion-content">
+            <div class="accordion-body">
+
+                <div class="subsection">
+                    <h3>The SBI Method: Situation — Behaviour — Impact</h3>
+                    <p>Feedback is how people grow. Yet most managers avoid giving it because it feels awkward, or they give it poorly — vague, emotional, or too late. The <strong>SBI Method</strong> gives you a simple three-part structure for feedback that is clear, specific, and actionable.</p>
+
+                    <div class="info-grid-3">
+                        <div class="pillar-card">
+                            <h4>S — Situation</h4>
+                            <p>When and where did this happen? Be specific. This grounds the feedback in a real moment, not a vague generalisation.<br><em style="font-size:0.9em;">"In yesterday's team meeting..."</em></p>
+                        </div>
+                        <div class="pillar-card warm">
+                            <h4>B — Behaviour</h4>
+                            <p>What exactly did they do or say? Describe observable actions, not your interpretation. Facts, not judgements.<br><em style="font-size:0.9em;">"...you interrupted Sarah and said 'let's move on.'"</em></p>
+                        </div>
+                        <div class="pillar-card mid">
+                            <h4>I — Impact</h4>
+                            <p>What was the result? Explain the consequence — on you, the team, the work, or the customer.<br><em style="font-size:0.9em;">"Sarah looked discouraged and didn't speak up again."</em></p>
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <strong>Full SBI example:</strong> "In yesterday's team meeting, when Sarah raised a concern about the new system, you interrupted and said 'let's move on.' Sarah looked discouraged and didn't speak up for the rest of the meeting. I'm concerned her perspective isn't being heard, and we might miss important issues."<br><br>
+                        <em>Then pause. Listen to their response. This is a conversation, not a lecture.</em>
+                    </div>
+
+                    <h4>Positive feedback also uses SBI</h4>
+                    <p>Don't just use SBI for problems. Specific praise is far more powerful than a generic "good job."</p>
+                    <div class="example">
+                        <strong>Positive SBI at Indigo Luna</strong><br><br>
+                        "In last week's customer complaint [Situation], you stayed calm, listened to their full story without interrupting, and proposed two solutions [Behaviour]. The customer left feeling heard and chose to keep their order — that's exactly the kind of service recovery we need [Impact]. Really well done."
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Cultural Sensitivity in Feedback</h3>
+                    <p>At Indigo Luna, you're managing across cultures. What feels direct and helpful in Australia may feel harsh or embarrassing in Indonesia, and vice versa.</p>
+                    <ul>
+                        <li><strong>Private, not public:</strong> In many cultures (including Indonesia), public criticism causes loss of face. Always give critical feedback one-on-one.</li>
+                        <li><strong>Relationship first:</strong> Build trust before delivering tough feedback. If someone doesn't believe you care about them, feedback lands as criticism.</li>
+                        <li><strong>Invitation, not demand:</strong> "I have some thoughts on how that meeting went. Would it be helpful if I shared them?" This gives the person agency.</li>
+                        <li><strong>Balance:</strong> Pair developmental feedback with recognition of strengths. Don't make the whole conversation about what's wrong.</li>
+                    </ul>
+                    <div class="callout callout-warm">
+                        <strong>Timing matters.</strong> Give feedback soon after the behaviour (ideally within 24–48 hours) while it's fresh, but not in the heat of the moment. If you're frustrated, wait until you can deliver it calmly.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">9</span> Think of a team member who did something recently worth reinforcing (positive behaviour). Write out SBI feedback you would give them.</label>
+                        <textarea name="q9_positive" required placeholder="Situation: When...&#10;Behaviour: You...&#10;Impact: As a result..."></textarea>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">10</span> Now think of a behaviour you need to address (developmental feedback). Write out SBI feedback for that situation.</label>
+                        <textarea name="q10_developmental" required placeholder="Situation: When...&#10;Behaviour: You...&#10;Impact: As a result..."></textarea>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">11</span> Reflecting on your team's cultural makeup, what adjustments might you need to make in how you deliver feedback?</label>
+                        <textarea name="q11_cultural" required placeholder="Consider communication styles, privacy needs, relationship dynamics..."></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ PART 6 ═══ -->
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title">
+                <span class="accordion-number">Part Six</span>
+                <h2 class="accordion-heading">Pillar 3: Conflict Resolution</h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <span class="accordion-time">10 minutes</span>
+                <div class="accordion-icon">+</div>
+            </div>
+        </div>
+        <div class="accordion-content">
+            <div class="accordion-body">
+
+                <div class="subsection">
+                    <h3>The 5 Conflict Management Styles</h3>
+                    <p>Conflict is inevitable in any team. The question isn't whether conflict will arise, but <strong>how you'll respond.</strong> Avoiding conflict doesn't preserve harmony — it allows resentment to build.</p>
+                    <p>The Thomas-Kilmann model identifies five approaches, each suited to different situations. Understanding all five — and knowing your own default — is the foundation of navigating conflict well.</p>
+
+                    <!-- TK Visual Diagram -->
+                    <div class="tk-diagram">
+                        <div class="tk-diagram-header">Thomas-Kilmann Conflict Model — 5 Styles mapped by Assertiveness &amp; Cooperation</div>
+                        <div class="tk-grid-layout">
+                            <div class="tk-axis-y">
+                                <span>High assertiveness &uarr;</span>
+                                <span></span>
+                            </div>
+
+                            <div class="tk-cell" id="tk-competing">
+                                <div class="tk-cell-name"><span class="style-emoji">🥊</span> Competing</div>
+                                <div class="tk-cell-axes">High assertiveness · Low cooperation</div>
+                                <div class="tk-cell-desc">You push your position firmly. Necessary for emergencies — but damages relationships if overused.</div>
+                                <div class="tk-cell-when">Best for: safety issues, ethical violations, urgent decisions.</div>
+                            </div>
+                            <div class="tk-cell" id="tk-collaborating">
+                                <div class="tk-cell-name"><span class="style-emoji">🌟</span> Collaborating</div>
+                                <div class="tk-cell-axes">High assertiveness · High cooperation</div>
+                                <div class="tk-cell-desc">You work together until both parties are fully satisfied. Takes time but builds trust and finds the best solutions.</div>
+                                <div class="tk-cell-when">Best for: important decisions, ongoing relationships, creative solutions.</div>
+                            </div>
+
+                            <div class="tk-cell-center">
+                                <div class="tk-center-text">
+                                    <div class="tk-cell-name"><span class="style-emoji">🤷</span> Compromising — Middle ground</div>
+                                    <div class="tk-cell-desc">Medium assertiveness · Medium cooperation. Both parties give up something. Faster than collaborating but less satisfying for both sides. Best when time is short and both sides need to feel heard.</div>
+                                </div>
+                            </div>
+
+                            <div class="tk-cell" id="tk-avoiding">
+                                <div class="tk-cell-name"><span class="style-emoji">🏃</span> Avoiding</div>
+                                <div class="tk-cell-axes">Low assertiveness · Low cooperation</div>
+                                <div class="tk-cell-desc">You withdraw, hoping the conflict resolves itself. Usually delays rather than solves the problem.</div>
+                                <div class="tk-cell-when">Best for: trivial issues, or when you need to cool down first.</div>
+                            </div>
+                            <div class="tk-cell" id="tk-accommodating">
+                                <div class="tk-cell-name"><span class="style-emoji">🤝</span> Accommodating</div>
+                                <div class="tk-cell-axes">Low assertiveness · High cooperation</div>
+                                <div class="tk-cell-desc">You yield to the other person's preferences. Preserves relationships when it matters — but risks being taken advantage of.</div>
+                                <div class="tk-cell-when">Best for: when the issue matters more to them, or you were wrong.</div>
+                            </div>
+
+                            <div class="tk-axis-x">
+                                <span>&larr; Low cooperation</span>
+                                <span>High cooperation &rarr;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>What Is Your Default Style?</h3>
+                    <p>Most people have one style they overuse. Some managers avoid conflict until it explodes. Others compete on everything and burn out their teams. The skill is recognising your default and consciously choosing the right style for the situation.</p>
+                    <p class="conflict-selector-hint">Click the card that best describes how you naturally respond to conflict</p>
+
+                    <div class="conflict-selector" id="conflictSelector">
+                        <div class="conflict-card" onclick="selectConflict(this, 'Avoiding')">
+                            <span class="conflict-my-default">My default</span>
+                            <div class="conflict-card-icon">🏃</div>
+                            <div class="conflict-card-name">Avoiding</div>
+                            <div class="conflict-card-hint">I tend to step back and hope it resolves itself</div>
+                        </div>
+                        <div class="conflict-card" onclick="selectConflict(this, 'Accommodating')">
+                            <span class="conflict-my-default">My default</span>
+                            <div class="conflict-card-icon">🤝</div>
+                            <div class="conflict-card-name">Accommodating</div>
+                            <div class="conflict-card-hint">I tend to go along with what others want</div>
+                        </div>
+                        <div class="conflict-card" onclick="selectConflict(this, 'Competing')">
+                            <span class="conflict-my-default">My default</span>
+                            <div class="conflict-card-icon">🥊</div>
+                            <div class="conflict-card-name">Competing</div>
+                            <div class="conflict-card-hint">I tend to push firmly for my position</div>
+                        </div>
+                        <div class="conflict-card" onclick="selectConflict(this, 'Compromising')">
+                            <span class="conflict-my-default">My default</span>
+                            <div class="conflict-card-icon">🤷</div>
+                            <div class="conflict-card-name">Compromising</div>
+                            <div class="conflict-card-hint">I tend to find the middle ground quickly</div>
+                        </div>
+                        <div class="conflict-card" onclick="selectConflict(this, 'Collaborating')">
+                            <span class="conflict-my-default">My default</span>
+                            <div class="conflict-card-icon">🌟</div>
+                            <div class="conflict-card-name">Collaborating</div>
+                            <div class="conflict-card-hint">I tend to work through it together until everyone is satisfied</div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="q_conflict_selected" id="conflictSelected">
+                </div>
+
+                <div class="subsection">
+                    <h3>De-escalation Techniques</h3>
+                    <p>When conflict is heated, your first job is to <strong>lower the temperature</strong> so rational conversation is possible.</p>
+
+                    <h4>1. Acknowledge Emotion</h4>
+                    <p>Don't ignore or minimise feelings. Name what you're seeing: "I can see this is really frustrating for you." This validation often reduces intensity significantly.</p>
+
+                    <h4>2. Slow Down</h4>
+                    <p>Speak more slowly and calmly than the other person. Your tone sets the tone. If you match their intensity, the conflict escalates.</p>
+
+                    <h4>3. Separate People from the Problem</h4>
+                    <p>Frame the conflict as "us vs the problem," not "you vs me." Say: "Let's figure this out together" instead of "You need to understand that..."</p>
+
+                    <h4>4. Take a Break if Needed</h4>
+                    <p>"This is important and I want to give it the attention it deserves. Can we take 10 minutes and come back to this?" This is not avoiding — it is being strategic.</p>
+
+                    <div class="example">
+                        <strong>De-escalation at Indigo Luna</strong><br><br>
+                        Two team members arguing in the warehouse about a mispacked order. Voices are raised.<br><br>
+                        <strong>Poor response:</strong> "Both of you, stop. I don't care whose fault it was, just fix it." — Shuts down without resolving the issue. Problem will repeat.<br><br>
+                        <strong>De-escalation:</strong> "Hey — I can see you're both frustrated. Let's pause. I want to understand what happened. Walk me through the process step by step, and let's figure out together how this happened so we can prevent it next time." — You are investigating the process, not assigning blame.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">12</span> What is your default conflict style? Why do you think you default to it, and when does it work against you?</label>
+                        <textarea name="q12_conflict_style" id="q12" required placeholder="Name your default style and describe when it tends to show up..."></textarea>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">13</span> Think of a current or recent conflict on your team. Which conflict management style would be most appropriate for that situation, and why?</label>
+                        <textarea name="q13_conflict_apply" required placeholder="Describe the situation and which of the 5 styles would work best..."></textarea>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">14</span> Which de-escalation technique will you try next time conflict arises, and why?</label>
+                        <textarea name="q14_deescalation" required placeholder="Acknowledge emotion / Slow down / Separate people from problem / Take a break..."></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="brand-image-break">
+        <img src="https://drive.google.com/thumbnail?id=1Rv4WvmvP369eJR_vtbMuCcxDwwo7zrKx&sz=w1600" alt="Indigo Luna">
+    </div>
+
+    <!-- ═══ PART 7 ═══ -->
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title">
+                <span class="accordion-number">Part Seven</span>
+                <h2 class="accordion-heading">Real-World Application</h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <span class="accordion-time">5 minutes</span>
+                <div class="accordion-icon">+</div>
+            </div>
+        </div>
+        <div class="accordion-content">
+            <div class="accordion-body">
+
+                <div class="subsection">
+                    <h3>From Learning to Leading: Your Action Plan</h3>
+                    <p>Knowledge without application is just theory. Everything you have explored today only becomes real when you practise it with your team.</p>
+                    <div class="callout callout-warm">
+                        <strong>Important:</strong> Don't try to improve everything at once. Pick one or two skills that matter most right now and practise them consistently for two weeks. That is how habits form.
+                    </div>
+
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">15</span> Which communication skills will have the biggest impact on your team right now? (Tick all that apply)</label>
+                        <div class="checklist">
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <input type="checkbox" name="q15_transparency"><label><strong>Being more transparent</strong> about decisions and context</label>
+                            </div>
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <input type="checkbox" name="q15_listening"><label><strong>Practising active listening</strong> at Level 2 or 3</label>
+                            </div>
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <input type="checkbox" name="q15_questions"><label><strong>Asking better questions</strong> (open-ended, starting with "What" or "How")</label>
+                            </div>
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <input type="checkbox" name="q15_feedback"><label><strong>Giving clearer feedback</strong> using the SBI method</label>
+                            </div>
+                            <div class="checklist-item" onclick="toggleCheck(this)">
+                                <input type="checkbox" name="q15_conflict"><label><strong>Addressing conflict</strong> instead of avoiding it</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">16</span> Describe one specific conversation you will have this week where you will practise a new communication technique. What will you do differently?</label>
+                        <textarea name="q16_conversation" required placeholder="Example: In my one-on-one with Dewa on Tuesday, I will practise Level 2 listening by paraphrasing what he says before offering my thoughts..."></textarea>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">17</span> Is there someone on your team you owe feedback to — positive or developmental? Write their name and what you will say using SBI.</label>
+                        <textarea name="q17_feedback_owed" required placeholder="Name:&#10;Situation:&#10;Behaviour:&#10;Impact:"></textarea>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">18</span> What communication mistake have you made in the past that you want to avoid repeating? What will you do differently next time?</label>
+                        <textarea name="q18_mistake" required placeholder="Be specific — what happened, and what is your plan?"></textarea>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Final Reflection</h3>
+                    <div class="slider-container">
+                        <label class="question-label" style="margin-bottom:20px;"><span class="question-number">19</span> How confident do you feel about your communication skills right now?</label>
+                        <div class="slider-labels"><span>Not confident</span><span>Very confident</span></div>
+                        <input type="range" min="1" max="5" value="3" class="slider" name="q19_confidence" id="confidenceSlider" oninput="updateSlider(this.value)" required>
+                        <div class="slider-value"><span id="sliderVal">3</span> / 5</div>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">20</span> What is the most important insight you are taking away from this module?</label>
+                        <textarea name="q20_insight" required placeholder="What surprised you? What will you remember and use?"></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-section">
+        <h3>You Are Ready to Submit</h3>
+        <p>Your responses will be sent to Clara for review before your follow-up discussion.</p>
+        <p style="font-size:0.95em;margin-bottom:35px;"><strong>Next step:</strong> Schedule a 30-minute follow-up with Clara within the next 2 weeks.</p>
+        <button type="submit" class="btn">Submit Your Responses</button>
+    </div>
+
+</form>
+
+<div id="successMessage" class="success-message hidden">
+    <h2>Responses Submitted</h2>
+    <p>Thank you for completing Module 2: Communication Skills.</p>
+    <p>Your responses have been sent to Clara.</p>
+    <p style="margin-top:30px;"><strong>Next Step:</strong> Schedule a 30-minute follow-up discussion with Clara within the next 2 weeks.</p>
+</div>
+</div>
+
+<div class="footer">
+    <p><strong>Indigo Luna Manager Training Programme</strong></p>
+    <p>Module 2 of 7 | Estimated time: 45–60 minutes</p>
+</div>
+
+<script>
+    // Accordion
+    function toggleAccordion(header) {
+        const content = header.nextElementSibling;
+        const icon = header.querySelector('.accordion-icon');
+        const isActive = header.classList.contains('active');
+
+        document.querySelectorAll('.accordion-header').forEach(h => {
+            h.classList.remove('active');
+            h.querySelector('.accordion-icon').textContent = '+';
+        });
+        document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('active'));
+
+        if (!isActive) {
+            header.classList.add('active');
+            content.classList.add('active');
+            icon.textContent = '−';
+            updateProgress(header);
+            setTimeout(() => {
+                const top = header.getBoundingClientRect().top + window.pageYOffset - 20;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }, 450);
+        }
+    }
+
+    function updateProgress(header) {
+        const all = document.querySelectorAll('.accordion-header');
+        const index = Array.from(all).indexOf(header);
+        document.querySelectorAll('.progress-step').forEach((step, i) => {
+            step.classList.remove('active', 'completed');
+            if (i < index) step.classList.add('completed');
+            else if (i === index) step.classList.add('active');
+        });
+        document.getElementById('currentStep').textContent = index + 1;
+    }
+
+    function updateSlider(val) {
+        document.getElementById('sliderVal').textContent = val;
+    }
+
+    function toggleCheck(item) {
+        const cb = item.querySelector('input[type="checkbox"]');
+        cb.checked = !cb.checked;
+        item.classList.toggle('checked', cb.checked);
+        localStorage.setItem('module2_' + cb.name, cb.checked);
+    }
+
+    // Listening level selector
+    function selectLevel(card, level) {
+        document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        document.getElementById('levelSelected').value = level;
+        localStorage.setItem('module2_level', level);
+
+        const q4 = document.getElementById('q4');
+        const starters = { 1: 'I tend to operate at Level 1 (Internal Listening). ', 2: 'I tend to operate at Level 2 (Focused Listening). ', 3: 'I tend to operate at Level 3 (Global Listening). ' };
+        if (q4.value === '' || /^I tend to operate at Level/.test(q4.value)) {
+            q4.value = starters[level];
+            q4.focus();
+            q4.setSelectionRange(q4.value.length, q4.value.length);
+            localStorage.setItem('module2_q4', q4.value);
+        }
+    }
+
+    // Conflict style selector
+    function selectConflict(card, style) {
+        document.querySelectorAll('.conflict-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        document.getElementById('conflictSelected').value = style;
+        localStorage.setItem('module2_conflict', style);
+
+        // Highlight matching TK diagram row
+        ['competing','collaborating','avoiding','accommodating'].forEach(s => {
+            const el = document.getElementById('tk-' + s);
+            if (el) el.classList.toggle('highlight', s === style.toLowerCase());
+        });
+
+        const q12 = document.getElementById('q12');
+        if (q12.value === '' || /^My default conflict style is/.test(q12.value)) {
+            q12.value = 'My default conflict style is ' + style + '. ';
+            q12.focus();
+            q12.setSelectionRange(q12.value.length, q12.value.length);
+            localStorage.setItem('module2_q12', q12.value);
+        }
+    }
+
+    // Form submit
+    const form = document.getElementById('courseForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const inputs = form.querySelectorAll('[name]');
+        const responses = {};
+
+        inputs.forEach(input => {
+            const card = input.closest('.question-card, .slider-question, .slider-container');
+            const label = card ? card.querySelector('label') : null;
+            let questionText = '';
+            if (label) {
+                const clone = label.cloneNode(true);
+                const numSpan = clone.querySelector('.question-number');
+                if (numSpan) numSpan.remove();
+                questionText = clone.textContent.trim();
+            }
+            responses[input.name] = {
+                question: questionText || input.name,
+                answer: input.value
+            };
+        });
+
+        responses.managerName = form.querySelector('[name="managerName"]').value;
+        responses.department = form.querySelector('[name="department"]').value;
+        responses.moduleName = "Module 2: Communication Skills";
+        responses.submittedAt = new Date().toISOString();
+
+        try {
+            await fetch('https://script.google.com/macros/s/AKfycbx0lBsqq98_jfMwBDhDPcqK4KbnLdKDRS3dhPsn7bntT-GH-I5Cuu1Ui6DrbiooiZDjYw/exec', {
+                method: 'POST',
+                body: JSON.stringify(responses),
+                headers: { 'Content-Type': 'text/plain' }
+            });
+        } catch (err) {
+            console.error('Submission error:', err);
+        }
+
+        form.classList.add('hidden');
+        document.getElementById('successMessage').classList.remove('hidden');
+        document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Auto-save
+    form.querySelectorAll('input, textarea').forEach(input => {
+        const key = 'module2_' + input.name;
+        const saved = localStorage.getItem(key);
+        if (saved !== null) {
+            if (input.type === 'checkbox') { input.checked = saved === 'true'; if (input.checked) input.closest('.checklist-item')?.classList.add('checked'); }
+            else if (input.type === 'range') { input.value = saved; updateSlider(saved); }
+            else if (input.type !== 'hidden') input.value = saved;
+        }
+        input.addEventListener('change', () => localStorage.setItem(key, input.type === 'checkbox' ? input.checked : input.value));
+        if (input.tagName === 'TEXTAREA') {
+            let t;
+            input.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => localStorage.setItem(key, input.value), 800); });
+        }
+    });
+
+    // Restore selections
+    const savedLevel = localStorage.getItem('module2_level');
+    if (savedLevel) {
+        const cards = document.querySelectorAll('#levelSelector .level-card');
+        const card = cards[savedLevel - 1];
+        if (card) card.classList.add('selected');
+    }
+    const savedConflict = localStorage.getItem('module2_conflict');
+    if (savedConflict) {
+        const card = document.querySelector('.conflict-card[onclick*="' + savedConflict + '"]');
+        if (card) {
+            card.classList.add('selected');
+            const el = document.getElementById('tk-' + savedConflict.toLowerCase());
+            if (el) el.classList.add('highlight');
+        }
+    }
+
+    // Open first accordion on load
+    window.addEventListener('load', () => {
+        const first = document.querySelector('.accordion-header');
+        if (first) toggleAccordion(first);
+    });
+</script>
+</body>
+</html>
