@@ -7,13 +7,53 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* ── Module 2 specific styles ── */
+        .subsection-divider { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 30px auto 50px; max-width: 280px; color: var(--il-gray); }
+        .subsection-divider::before, .subsection-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--il-border), transparent); }
+        .subsection-divider-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--il-sage); opacity: 0.6; }
+
+        .subsection > h3 { position: relative; padding-bottom: 14px; margin-bottom: 26px; }
+        .subsection > h3::after { content: ''; position: absolute; left: 0; bottom: 0; width: 44px; height: 2px; background: linear-gradient(90deg, var(--il-sage) 0%, var(--il-bronze) 100%); border-radius: 2px; }
+
+        h4.numbered { display: flex; align-items: center; gap: 12px; }
+        h4.numbered::before { content: attr(data-num); display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; background: rgba(165,168,143,0.18); color: var(--il-sage); font-size: 0.85em; font-weight: 600; }
+
+        .section-opener { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; padding-bottom: 22px; border-bottom: 1px dashed rgba(165,168,143,0.35); }
+        .section-opener-icon { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(165,168,143,0.18), rgba(177,151,78,0.18)); font-size: 1.4em; flex-shrink: 0; }
+        .section-opener-text { font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.18em; color: var(--il-gray); line-height: 1.5; }
+        .section-opener-text strong { display: block; color: var(--il-taupe); font-size: 1.4em; font-weight: 400; letter-spacing: 0.025em; text-transform: none; margin-top: 2px; }
+
+        .pullquote { margin: 45px auto 50px; max-width: 720px; padding: 30px 40px 32px; text-align: center; background: var(--il-white); border-top: 2px solid var(--il-sage); border-bottom: 2px solid var(--il-sage); border-left: none; border-right: none; }
+        .pullquote-mark { font-family: Georgia, serif; font-size: 3em; color: var(--il-sage); line-height: 0.5; display: block; margin-bottom: 14px; }
+        .pullquote-text { font-size: 1.35em; font-weight: 300; line-height: 1.55; color: var(--il-taupe); font-style: italic; margin-bottom: 20px; }
+        .pullquote-cite { font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.2em; color: var(--il-gray); font-weight: 400; }
+        .pullquote-cite strong { color: var(--il-bronze); font-weight: 600; }
+
+        .stat-block { display: flex; align-items: center; gap: 32px; padding: 32px 36px; background: linear-gradient(135deg, rgba(177,151,78,0.09) 0%, rgba(165,168,143,0.09) 100%); border-radius: 16px; margin: 35px 0; border: 1px solid rgba(165,168,143,0.18); }
+        .stat-number { font-size: 4.2em; font-weight: 200; color: var(--il-bronze); line-height: 1; letter-spacing: -0.02em; flex-shrink: 0; }
+        .stat-text { font-size: 1.02em; line-height: 1.65; margin-bottom: 0; }
+        .stat-text strong { color: var(--il-taupe); font-weight: 600; }
+
+        .example:hover { box-shadow: 0 8px 22px rgba(114,102,95,0.08); }
+        .example::after { content: 'Example'; position: absolute; top: 14px; right: 18px; font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.15em; color: var(--il-gray); background: var(--il-cream); padding: 4px 10px; border-radius: 12px; }
+
+        .roleplay-card { background: linear-gradient(135deg, rgba(177,151,78,0.10) 0%, rgba(165,168,143,0.10) 100%); border: 2px dashed var(--il-bronze); }
+        .roleplay-card:hover { border-color: var(--il-bronze); }
+        .roleplay-tag { display: inline-block; background: var(--il-bronze); color: white; font-size: 0.72em; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; font-weight: 600; }
+        .roleplay-card p { margin-bottom: 14px; }
+        .roleplay-card p:last-child { margin-bottom: 0; }
+
         .info-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 25px 0; }
 
-        .pillar-card { background: var(--il-white); border: 1px solid var(--il-border); border-radius: 10px; padding: 22px; border-top: 3px solid var(--il-sage); }
+        .pillar-card { background: var(--il-white); border: 1px solid var(--il-border); border-radius: 12px; padding: 26px 22px 24px; border-top: 3px solid var(--il-sage); transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; }
+        .pillar-card:hover { transform: translateY(-4px); box-shadow: 0 10px 26px rgba(114,102,95,0.10); }
         .pillar-card.warm { border-top-color: var(--il-bronze); }
         .pillar-card.mid { border-top-color: var(--il-taupe); }
         .pillar-card h4 { margin-top: 0; margin-bottom: 10px; font-size: 1em; font-weight: 600; }
         .pillar-card p { font-size: 0.9em; margin-bottom: 0; line-height: 1.65; }
+        .pillar-card-icon { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: rgba(165,168,143,0.15); color: var(--il-sage); font-size: 1.25em; margin-bottom: 14px; }
+        .pillar-card.warm .pillar-card-icon { background: rgba(177,151,78,0.16); color: var(--il-bronze); }
+        .pillar-card.mid .pillar-card-icon { background: rgba(114,102,95,0.12); color: var(--il-taupe); }
 
         .level-selector { display: grid; grid-template-columns: 1fr 28px 1fr 28px 1fr; gap: 0; margin: 20px 0 28px; align-items: stretch; }
         .level-arrow { display: flex; align-items: center; justify-content: center; font-size: 1.3em; color: var(--il-border); padding-top: 40px; user-select: none; }
@@ -74,14 +114,19 @@
         .conflict-my-default { display: none; position: absolute; top: 8px; right: 8px; background: var(--il-sage); color: white; font-size: 0.68em; padding: 2px 7px; border-radius: 20px; }
         .conflict-selector-hint { font-size: 0.85em; color: var(--il-gray); margin-bottom: 12px; font-style: italic; }
 
-        .slider-container { margin: 30px 0; }
-
         @media (max-width: 768px) {
             .info-grid-3, .conflict-selector { grid-template-columns: 1fr; }
             .level-selector { grid-template-columns: 1fr; }
             .level-arrow { padding-top: 0; font-size: 1em; height: 24px; transform: rotate(90deg); }
             .tk-grid-layout { grid-template-columns: 1fr; }
             .tk-cell-center { flex-direction: column; }
+        }
+        @media (max-width: 600px) {
+            .stat-block { flex-direction: column; align-items: flex-start; gap: 14px; padding: 28px 24px; }
+            .stat-number { font-size: 3.4em; }
+            .pullquote { padding: 32px 24px 28px; }
+            .pullquote-text { font-size: 1.15em; }
+            .section-opener { flex-direction: column; align-items: flex-start; gap: 12px; }
         }
     </style>
 </head>
@@ -103,10 +148,8 @@
             <div class="progress-step"></div>
             <div class="progress-step"></div>
             <div class="progress-step"></div>
-            <div class="progress-step"></div>
-            <div class="progress-step"></div>
         </div>
-        <div class="progress-label">Section <span id="currentStep">1</span> of 7</div>
+        <div class="progress-label">Section <span id="currentStep">1</span> of 5</div>
     </div>
 </div>
 
@@ -128,10 +171,10 @@
         <div class="objectives">
             <h3>What You'll Learn Today</h3>
             <ul>
-                <li>Understand the three pillars of effective managerial communication</li>
-                <li>Develop active listening skills using the three levels of listening</li>
-                <li>Ask powerful, open-ended questions that unlock honest conversation</li>
+                <li>Understand how communication creates psychological safety and inspires your team</li>
+                <li>Master the three pillars: Transparency, Active Listening, and Conflict Resolution</li>
                 <li>Give clear, specific feedback using the SBI method</li>
+                <li>Ask powerful, open-ended questions that unlock honest conversation</li>
                 <li>Navigate conflict productively using the Thomas-Kilmann model</li>
             </ul>
         </div>
@@ -152,13 +195,36 @@
         <div class="accordion-content">
             <div class="accordion-body">
 
+                <div class="section-opener">
+                    <div class="section-opener-icon">💬</div>
+                    <div class="section-opener-text">The foundation<strong>Why this matters before anything else</strong></div>
+                </div>
+
                 <div class="subsection">
                     <h3>If Leadership Is Direction, Communication Is the Journey</h3>
                     <p>In Module 1, we explored how vision gives your team direction. But vision alone isn't enough — you need to bring people along on the journey. <strong>Communication is how that happens.</strong></p>
-                    <p>As a manager at Indigo Luna, you're navigating genuine complexity: coordinating across Indonesia and Australia, managing teams with diverse cultural backgrounds, and ensuring clarity when you can't always be face-to-face. The quality of your communication directly impacts team performance, morale, and your ability to scale.</p>
-                    <div class="callout callout-warm">
-                        <strong>Research shows managers spend 70–90% of their time communicating.</strong> Yet most receive little formal training in this skill. Communication is your highest-leverage tool — and it's one you can actively improve.
+                    <p>As a manager at Indigo Luna, you're navigating complexity: coordinating across Indonesia and Australia, managing teams with diverse cultural backgrounds, and ensuring clarity when you can't always be face-to-face. The quality of your communication directly impacts team performance, morale, and your ability to scale.</p>
+                    <div class="stat-block">
+                        <div class="stat-number">70–90%</div>
+                        <p class="stat-text"><strong>of a manager's time is spent communicating.</strong> Yet most receive little formal training in this skill. Communication is your highest-leverage tool — and it's one you can actively improve.</p>
                     </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Communication Builds Psychological Safety</h3>
+                    <p>A leader who communicates openly creates a culture of honesty and psychological safety, where team members feel safe to share ideas, ask questions, and raise concerns.</p>
+                    <div class="pullquote">
+                        <span class="pullquote-mark">&ldquo;</span>
+                        <p class="pullquote-text">Trust is the foundation of any strong team, and trust is built through clear, consistent communication.</p>
+                        <div class="pullquote-cite"><strong>Harvard Business Review</strong></div>
+                    </div>
+                    <p>When your team trusts that you will listen without judgement, share context honestly, and follow through on what you say, they bring their full thinking to work. They flag issues early, challenge ideas, and own outcomes. Without that trust, you only ever get the surface — polite agreement, hidden problems, and quiet disengagement.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>Great Leaders Are Great Storytellers</h3>
+                    <p>Great leaders don't just inform; they inspire. Through compelling messages, metaphors, or real-life examples, they move people emotionally, not just intellectually. This is how movements start and cultures are shaped.</p>
+                    <p>A spreadsheet tells the team what is happening. A story tells them <strong>why it matters</strong>, and how their work fits into something bigger. When you share a customer letter, recall the story of how a product got made, or describe a moment a teammate lived our values, you're not being sentimental — you're building culture.</p>
                 </div>
 
                 <div class="subsection">
@@ -199,19 +265,27 @@
         <div class="accordion-content">
             <div class="accordion-body">
 
+                <div class="section-opener">
+                    <div class="section-opener-icon">🪟</div>
+                    <div class="section-opener-text">Pillar 1 of 3<strong>Transparency, feedback &amp; cultural sensitivity</strong></div>
+                </div>
+
                 <div class="subsection">
                     <p>Great managerial communication rests on three foundational pillars. Master these, and you will handle 90% of situations effectively.</p>
 
                     <div class="info-grid-3">
                         <div class="pillar-card">
+                            <div class="pillar-card-icon">🪟</div>
                             <h4>1. Transparency</h4>
                             <p>Sharing context, reasoning, and truth — even when it's uncomfortable. It's the foundation of trust.</p>
                         </div>
                         <div class="pillar-card warm">
+                            <div class="pillar-card-icon">👂</div>
                             <h4>2. Active Listening</h4>
                             <p>Fully receiving what someone is saying — not just waiting for your turn to talk. Rare, difficult, and transformative.</p>
                         </div>
                         <div class="pillar-card mid">
+                            <div class="pillar-card-icon">⚖️</div>
                             <h4>3. Conflict Resolution</h4>
                             <p>Resolving disagreements productively so the team can move forward. Conflict is data — it tells you where things are misaligned.</p>
                         </div>
@@ -232,6 +306,55 @@
                 </div>
 
                 <div class="subsection">
+                    <h3>Giving Effective Feedback: The SBI Method</h3>
+                    <p>Transparency in action looks a lot like clear feedback. Feedback is how people grow — yet most managers avoid giving it because it feels awkward, or they give it poorly: vague, emotional, or too late. The <strong>SBI Method</strong> gives you a simple three-part structure for feedback that is clear, specific, and actionable.</p>
+
+                    <div class="info-grid-3">
+                        <div class="pillar-card">
+                            <div class="pillar-card-icon">📍</div>
+                            <h4>S — Situation</h4>
+                            <p>When and where did this happen? Be specific. This grounds the feedback in a real moment, not a vague generalisation.<br><em style="font-size:0.9em;">"In yesterday's team meeting..."</em></p>
+                        </div>
+                        <div class="pillar-card warm">
+                            <div class="pillar-card-icon">👁️</div>
+                            <h4>B — Behaviour</h4>
+                            <p>What exactly did they do or say? Describe observable actions, not your interpretation. Facts, not judgements.<br><em style="font-size:0.9em;">"...you interrupted Sarah and said 'let's move on.'"</em></p>
+                        </div>
+                        <div class="pillar-card mid">
+                            <div class="pillar-card-icon">💫</div>
+                            <h4>I — Impact</h4>
+                            <p>What was the result? Explain the consequence — on you, the team, the work, or the customer.<br><em style="font-size:0.9em;">"Sarah looked discouraged and didn't speak up again."</em></p>
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <strong>Full SBI example:</strong> "In yesterday's team meeting, when Sarah raised a concern about the new system, you interrupted and said 'let's move on.' Sarah looked discouraged and didn't speak up for the rest of the meeting. I'm concerned her perspective isn't being heard, and we might miss important issues."<br><br>
+                        <em>Then pause. Listen to their response. This is a conversation, not a lecture.</em>
+                    </div>
+
+                    <h4>Positive feedback also uses SBI</h4>
+                    <p>Don't just use SBI for problems. Specific praise is far more powerful than a generic "good job."</p>
+                    <div class="example">
+                        <strong>Positive SBI at Indigo Luna</strong><br><br>
+                        "In last week's customer complaint [Situation], you stayed calm, listened to their full story without interrupting, and proposed two solutions [Behaviour]. The customer left feeling heard and chose to keep their order — that's exactly the kind of service recovery we need [Impact]. Really well done."
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Cultural Sensitivity in Feedback</h3>
+                    <p>At Indigo Luna, you're managing across cultures. What feels direct and helpful in Australia may feel harsh or embarrassing in Indonesia, and vice versa.</p>
+                    <ul>
+                        <li><strong>Private, not public:</strong> In many cultures (including Indonesia), public criticism causes loss of face. Always give critical feedback one-on-one.</li>
+                        <li><strong>Relationship first:</strong> Build trust before delivering tough feedback. If someone doesn't believe you care about them, feedback lands as criticism.</li>
+                        <li><strong>Invitation, not demand:</strong> "I have some thoughts on how that meeting went. Would it be helpful if I shared them?" This gives the person agency.</li>
+                        <li><strong>Balance:</strong> Pair developmental feedback with recognition of strengths. Don't make the whole conversation about what's wrong.</li>
+                    </ul>
+                    <div class="callout callout-warm">
+                        <strong>Timing matters.</strong> Give feedback soon after the behaviour (ideally within 24–48 hours) while it's fresh, but not in the heat of the moment. If you're frustrated, wait until you can deliver it calmly.
+                    </div>
+                </div>
+
+                <div class="subsection">
                     <div class="question-card">
                         <label class="question-label"><span class="question-number">2</span> Of the three pillars — Transparency, Active Listening, Conflict Resolution — which is your strongest? Which needs the most work?</label>
                         <textarea name="q2_pillars" required placeholder="Reflect honestly on your current strengths and growth areas..."></textarea>
@@ -240,14 +363,29 @@
                         <label class="question-label"><span class="question-number">3</span> Think of a recent moment when you chose not to be fully transparent with your team. What was your reasoning? Looking back, was it the right call?</label>
                         <textarea name="q3_transparency" required placeholder="No judgment — just reflection. What were you trying to protect, and what was the impact?"></textarea>
                     </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">4</span> Think of a team member who did something recently worth reinforcing (positive behaviour). Write out SBI feedback you would give them.</label>
+                        <textarea name="q4_positive" required placeholder="Situation: When...&#10;Behaviour: You...&#10;Impact: As a result..."></textarea>
+                    </div>
+                    <div class="question-card roleplay-card">
+                        <span class="roleplay-tag">★ Practice with Clara · Role-play</span>
+                        <label class="question-label"><span class="question-number">5</span> Think of a behaviour you need to address (developmental feedback). Draft SBI feedback for that situation, then we'll role-play it together in your follow-up session.</label>
+                        <p style="font-size:0.92em;color:var(--il-gray);margin-top:-4px;">Bring this draft to our next call. We'll role-play the conversation so you can practise delivering it before doing it for real.</p>
+                        <textarea name="q5_developmental" required placeholder="Situation: When...&#10;Behaviour: You...&#10;Impact: As a result..."></textarea>
+                    </div>
+                    <div class="question-card">
+                        <label class="question-label"><span class="question-number">6</span> Reflecting on your team's cultural makeup, what adjustments might you need to make in how you deliver feedback?</label>
+                        <textarea name="q6_cultural" required placeholder="Consider communication styles, privacy needs, relationship dynamics..."></textarea>
+                    </div>
                 </div>
 
             </div>
         </div>
     </div>
 
+    <!-- Module 2 brand photo: IMAGE ONE (after Pillar 1: Transparency) -->
     <div class="brand-image-break">
-        <img src="https://drive.google.com/thumbnail?id=1NM_htVIz_kOQ14BH-C_ONYAHU-hI4fx6&sz=w1600" alt="Indigo Luna">
+        <img src="https://drive.google.com/thumbnail?id=1lfSP1FF4-kyaSKIJmK6qYB2ZnTkm__d_&sz=w1600" alt="Indigo Luna">
     </div>
 
     <!-- ═══ PART 3 ═══ -->
@@ -264,6 +402,11 @@
         </div>
         <div class="accordion-content">
             <div class="accordion-body">
+
+                <div class="section-opener">
+                    <div class="section-opener-icon">👂</div>
+                    <div class="section-opener-text">Pillar 2 of 3<strong>Listening, paraphrasing &amp; powerful questions</strong></div>
+                </div>
 
                 <div class="subsection">
                     <h3>The 3 Levels of Listening</h3>
@@ -304,17 +447,21 @@
                 <div class="subsection">
                     <h3>Techniques for Active Listening</h3>
 
-                    <h4>1. Paraphrasing</h4>
+                    <h4 class="numbered" data-num="1">Paraphrasing</h4>
                     <p>Restate what you heard in your own words. This confirms understanding and shows you are truly listening.</p>
                     <p><strong>Example:</strong> "So what I'm hearing is that you feel the new process is adding extra steps without clear benefit to the customer. Is that right?"</p>
 
-                    <h4>2. Clarifying Questions</h4>
+                    <h4 class="numbered" data-num="2">Clarifying Questions</h4>
                     <p>Ask to dig deeper, not to challenge. Your goal is to understand their thinking, not prove them wrong.</p>
                     <p><strong>Good:</strong> "Can you help me understand what happened after that?"<br>
                     <strong>Bad:</strong> "But didn't you already know the deadline?"</p>
 
-                    <h4>3. The Pause</h4>
+                    <h4 class="numbered" data-num="3">The Pause</h4>
                     <p>After someone finishes speaking, wait 2–3 seconds before responding. This signals you're processing rather than reacting, gives them space to add more (often the most important things come after the pause), and slows the conversation so you both think more clearly.</p>
+                    <div class="callout callout-warm">
+                        <strong>Ask for a longer pause when you need it.</strong> If you feel that you need to reflect before giving an answer — because the situation is tricky, emotional, or high-stakes — it is better to ask for a pause to reflect than to react impulsively or give a vague answer. Try: <em>"That's important. Let me think about it and come back to you this afternoon."</em><br><br>
+                        Being a manager doesn't mean having all the answers at any time. It means being reflective and accountable, so you can give your team the best support.
+                    </div>
 
                     <div class="example">
                         <strong>Active Listening at Indigo Luna</strong><br><br>
@@ -326,42 +473,8 @@
                 </div>
 
                 <div class="subsection">
-                    <div class="question-card">
-                        <label class="question-label"><span class="question-number">4</span> Which level do you usually listen at, and what tells you? What would shifting up one level look like for you in practice?</label>
-                        <textarea name="q4_listening" id="q4" required placeholder="Be honest — most of us default to Level 1. That is the starting point for improvement..."></textarea>
-                    </div>
-                    <div class="question-card">
-                        <label class="question-label"><span class="question-number">5</span> Practise paraphrasing. Think of something a team member said recently. Write how you would paraphrase it back to confirm understanding.</label>
-                        <textarea name="q5_paraphrase" required placeholder="'So if I understand correctly, you are saying that...'"></textarea>
-                    </div>
-                    <div class="question-card">
-                        <label class="question-label"><span class="question-number">6</span> Which active listening technique will you deliberately practise this week?</label>
-                        <textarea name="q6_technique" required placeholder="Describe the technique and how you will apply it in a real conversation..."></textarea>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ PART 4 ═══ -->
-    <div class="accordion">
-        <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-title">
-                <span class="accordion-number">Part Four</span>
-                <h2 class="accordion-heading">Asking Powerful Questions</h2>
-            </div>
-            <div style="display:flex;align-items:center;gap:15px;">
-                <span class="accordion-time">10 minutes</span>
-                <div class="accordion-icon">+</div>
-            </div>
-        </div>
-        <div class="accordion-content">
-            <div class="accordion-body">
-
-                <div class="subsection">
-                    <h3>Open-Ended vs Closed Questions</h3>
-                    <p>The quality of your questions determines the quality of information you receive. As a manager, you need questions that <strong>open up thinking</strong> rather than shut it down.</p>
+                    <h3>Asking Powerful Questions</h3>
+                    <p>Listening goes hand-in-hand with how you ask questions. The quality of your questions determines the quality of information you receive — questions that <strong>open up thinking</strong> rather than shut it down are one of the most powerful tools you have.</p>
 
                     <div class="callout">
                         <strong>Closed questions</strong> — answered with "yes," "no," or a single word. Useful for confirming facts; poor for understanding context.<br><br>
@@ -375,6 +488,8 @@
                         <strong>Benefit:</strong> You learn what is really happening, uncover hidden problems, and show you genuinely want to understand.
                     </div>
                 </div>
+
+                <div class="subsection-divider"><span class="subsection-divider-dot"></span></div>
 
                 <div class="subsection">
                     <h3>The Power of "What" and "How"</h3>
@@ -401,12 +516,19 @@
 
                 <div class="subsection">
                     <div class="question-card">
-                        <label class="question-label"><span class="question-number">7</span> Think of a situation where you recently asked a closed question. Rewrite it as an open-ended question using "What" or "How."</label>
-                        <textarea name="q7_rewrite" required placeholder="Original: 'Did you have any problems?'&#10;Rewritten: 'What challenges did you encounter?'"></textarea>
+                        <label class="question-label"><span class="question-number">7</span> Which level do you usually listen at, and what tells you? What would shifting up one level look like for you in practice?</label>
+                        <textarea name="q7_listening" id="q4" required placeholder="Be honest — most of us default to Level 1. That is the starting point for improvement..."></textarea>
+                    </div>
+                    <div class="question-card roleplay-card">
+                        <span class="roleplay-tag">★ Practice with Clara · Role-play</span>
+                        <label class="question-label"><span class="question-number">8</span> Active listening &amp; paraphrasing — practice exercise with Clara.</label>
+                        <p style="font-size:0.92em;color:var(--il-gray);">In your next session with Clara, you will do a short role-play to practise Level 2 listening and paraphrasing. Bring a real situation in mind from your team — Clara will play the team member.</p>
+                        <p style="font-size:0.92em;color:var(--il-gray);">Optional: jot a few notes below on what you want to practise (a recent conversation, a situation you've been avoiding, or a technique you find hard).</p>
+                        <textarea name="q8_roleplay_notes" placeholder="Notes for our role-play (optional)..."></textarea>
                     </div>
                     <div class="question-card">
-                        <label class="question-label"><span class="question-number">8</span> Write three open-ended questions you could ask in your next one-on-one to better understand what is really happening with your team member.</label>
-                        <textarea name="q8_questions" required placeholder="1. What...&#10;2. How...&#10;3. What..."></textarea>
+                        <label class="question-label"><span class="question-number">9</span> Think of a situation where you recently asked a closed question. Rewrite it as an open-ended question using "What" or "How."</label>
+                        <textarea name="q9_rewrite" required placeholder="Original: 'Did you have any problems?'&#10;Rewritten: 'What challenges did you encounter?'"></textarea>
                     </div>
                 </div>
 
@@ -414,95 +536,16 @@
         </div>
     </div>
 
+    <!-- Module 2 brand photo: IMAGE EIGHT (after Pillar 2: Active Listening) -->
     <div class="brand-image-break">
-        <img src="https://drive.google.com/thumbnail?id=19oqa4uwP1HE2eSd47XPRLLTdMS8_AZ_E&sz=w1600" alt="Indigo Luna">
+        <img src="https://drive.google.com/thumbnail?id=1sjSR9pot72l4lV6Hh0D9TYpwTLnIydBN&sz=w1600" alt="Indigo Luna">
     </div>
 
-    <!-- ═══ PART 5 ═══ -->
+    <!-- ═══ PART 4 ═══ -->
     <div class="accordion">
         <div class="accordion-header" onclick="toggleAccordion(this)">
             <div class="accordion-title">
-                <span class="accordion-number">Part Five</span>
-                <h2 class="accordion-heading">Giving Effective Feedback</h2>
-            </div>
-            <div style="display:flex;align-items:center;gap:15px;">
-                <span class="accordion-time">10 minutes</span>
-                <div class="accordion-icon">+</div>
-            </div>
-        </div>
-        <div class="accordion-content">
-            <div class="accordion-body">
-
-                <div class="subsection">
-                    <h3>The SBI Method: Situation — Behaviour — Impact</h3>
-                    <p>Feedback is how people grow. Yet most managers avoid giving it because it feels awkward, or they give it poorly — vague, emotional, or too late. The <strong>SBI Method</strong> gives you a simple three-part structure for feedback that is clear, specific, and actionable.</p>
-
-                    <div class="info-grid-3">
-                        <div class="pillar-card">
-                            <h4>S — Situation</h4>
-                            <p>When and where did this happen? Be specific. This grounds the feedback in a real moment, not a vague generalisation.<br><em style="font-size:0.9em;">"In yesterday's team meeting..."</em></p>
-                        </div>
-                        <div class="pillar-card warm">
-                            <h4>B — Behaviour</h4>
-                            <p>What exactly did they do or say? Describe observable actions, not your interpretation. Facts, not judgements.<br><em style="font-size:0.9em;">"...you interrupted Sarah and said 'let's move on.'"</em></p>
-                        </div>
-                        <div class="pillar-card mid">
-                            <h4>I — Impact</h4>
-                            <p>What was the result? Explain the consequence — on you, the team, the work, or the customer.<br><em style="font-size:0.9em;">"Sarah looked discouraged and didn't speak up again."</em></p>
-                        </div>
-                    </div>
-
-                    <div class="callout">
-                        <strong>Full SBI example:</strong> "In yesterday's team meeting, when Sarah raised a concern about the new system, you interrupted and said 'let's move on.' Sarah looked discouraged and didn't speak up for the rest of the meeting. I'm concerned her perspective isn't being heard, and we might miss important issues."<br><br>
-                        <em>Then pause. Listen to their response. This is a conversation, not a lecture.</em>
-                    </div>
-
-                    <h4>Positive feedback also uses SBI</h4>
-                    <p>Don't just use SBI for problems. Specific praise is far more powerful than a generic "good job."</p>
-                    <div class="example">
-                        <strong>Positive SBI at Indigo Luna</strong><br><br>
-                        "In last week's customer complaint [Situation], you stayed calm, listened to their full story without interrupting, and proposed two solutions [Behaviour]. The customer left feeling heard and chose to keep their order — that's exactly the kind of service recovery we need [Impact]. Really well done."
-                    </div>
-                </div>
-
-                <div class="subsection">
-                    <h3>Cultural Sensitivity in Feedback</h3>
-                    <p>At Indigo Luna, you're managing across cultures. What feels direct and helpful in Australia may feel harsh or embarrassing in Indonesia, and vice versa.</p>
-                    <ul>
-                        <li><strong>Private, not public:</strong> In many cultures (including Indonesia), public criticism causes loss of face. Always give critical feedback one-on-one.</li>
-                        <li><strong>Relationship first:</strong> Build trust before delivering tough feedback. If someone doesn't believe you care about them, feedback lands as criticism.</li>
-                        <li><strong>Invitation, not demand:</strong> "I have some thoughts on how that meeting went. Would it be helpful if I shared them?" This gives the person agency.</li>
-                        <li><strong>Balance:</strong> Pair developmental feedback with recognition of strengths. Don't make the whole conversation about what's wrong.</li>
-                    </ul>
-                    <div class="callout callout-warm">
-                        <strong>Timing matters.</strong> Give feedback soon after the behaviour (ideally within 24–48 hours) while it's fresh, but not in the heat of the moment. If you're frustrated, wait until you can deliver it calmly.
-                    </div>
-                </div>
-
-                <div class="subsection">
-                    <div class="question-card">
-                        <label class="question-label"><span class="question-number">9</span> Think of a team member who did something recently worth reinforcing (positive behaviour). Write out SBI feedback you would give them.</label>
-                        <textarea name="q9_positive" required placeholder="Situation: When...&#10;Behaviour: You...&#10;Impact: As a result..."></textarea>
-                    </div>
-                    <div class="question-card">
-                        <label class="question-label"><span class="question-number">10</span> Now think of a behaviour you need to address (developmental feedback). Write out SBI feedback for that situation.</label>
-                        <textarea name="q10_developmental" required placeholder="Situation: When...&#10;Behaviour: You...&#10;Impact: As a result..."></textarea>
-                    </div>
-                    <div class="question-card">
-                        <label class="question-label"><span class="question-number">11</span> Reflecting on your team's cultural makeup, what adjustments might you need to make in how you deliver feedback?</label>
-                        <textarea name="q11_cultural" required placeholder="Consider communication styles, privacy needs, relationship dynamics..."></textarea>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ PART 6 ═══ -->
-    <div class="accordion">
-        <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-title">
-                <span class="accordion-number">Part Six</span>
+                <span class="accordion-number">Part Four</span>
                 <h2 class="accordion-heading">Pillar 3: Conflict Resolution</h2>
             </div>
             <div style="display:flex;align-items:center;gap:15px;">
@@ -512,6 +555,11 @@
         </div>
         <div class="accordion-content">
             <div class="accordion-body">
+
+                <div class="section-opener">
+                    <div class="section-opener-icon">⚖️</div>
+                    <div class="section-opener-text">Pillar 3 of 3<strong>Naming conflict and choosing your response</strong></div>
+                </div>
 
                 <div class="subsection">
                     <h3>The 5 Conflict Management Styles</h3>
@@ -612,16 +660,16 @@
                     <h3>De-escalation Techniques</h3>
                     <p>When conflict is heated, your first job is to <strong>lower the temperature</strong> so rational conversation is possible.</p>
 
-                    <h4>1. Acknowledge Emotion</h4>
+                    <h4 class="numbered" data-num="1">Acknowledge Emotion</h4>
                     <p>Don't ignore or minimise feelings. Name what you're seeing: "I can see this is really frustrating for you." This validation often reduces intensity significantly.</p>
 
-                    <h4>2. Slow Down</h4>
+                    <h4 class="numbered" data-num="2">Slow Down</h4>
                     <p>Speak more slowly and calmly than the other person. Your tone sets the tone. If you match their intensity, the conflict escalates.</p>
 
-                    <h4>3. Separate People from the Problem</h4>
+                    <h4 class="numbered" data-num="3">Separate People from the Problem</h4>
                     <p>Frame the conflict as "us vs the problem," not "you vs me." Say: "Let's figure this out together" instead of "You need to understand that..."</p>
 
-                    <h4>4. Take a Break if Needed</h4>
+                    <h4 class="numbered" data-num="4">Take a Break if Needed</h4>
                     <p>"This is important and I want to give it the attention it deserves. Can we take 10 minutes and come back to this?" This is not avoiding — it is being strategic.</p>
 
                     <div class="example">
@@ -634,16 +682,12 @@
 
                 <div class="subsection">
                     <div class="question-card">
-                        <label class="question-label"><span class="question-number">12</span> What is your default conflict style? Why do you think you default to it, and when does it work against you?</label>
-                        <textarea name="q12_conflict_style" id="q12" required placeholder="Name your default style and describe when it tends to show up..."></textarea>
+                        <label class="question-label"><span class="question-number">10</span> What is your default conflict style? Why do you think you default to it, and when does it work against you?</label>
+                        <textarea name="q10_conflict_style" id="q12" required placeholder="Name your default style and describe when it tends to show up..."></textarea>
                     </div>
                     <div class="question-card">
-                        <label class="question-label"><span class="question-number">13</span> Think of a current or recent conflict on your team. Which conflict management style would be most appropriate for that situation, and why?</label>
-                        <textarea name="q13_conflict_apply" required placeholder="Describe the situation and which of the 5 styles would work best..."></textarea>
-                    </div>
-                    <div class="question-card">
-                        <label class="question-label"><span class="question-number">14</span> Which de-escalation technique will you try next time conflict arises, and why?</label>
-                        <textarea name="q14_deescalation" required placeholder="Acknowledge emotion / Slow down / Separate people from problem / Take a break..."></textarea>
+                        <label class="question-label"><span class="question-number">11</span> Think of a current or recent conflict on your team. Which conflict management style would be most appropriate for that situation, and why?</label>
+                        <textarea name="q11_conflict_apply" required placeholder="Describe the situation and which of the 5 styles would work best..."></textarea>
                     </div>
                 </div>
 
@@ -651,15 +695,16 @@
         </div>
     </div>
 
+    <!-- Module 2 brand photo: IMAGE FIFTEEN (after Pillar 3: Conflict Resolution) -->
     <div class="brand-image-break">
-        <img src="https://drive.google.com/thumbnail?id=1Rv4WvmvP369eJR_vtbMuCcxDwwo7zrKx&sz=w1600" alt="Indigo Luna">
+        <img src="https://drive.google.com/thumbnail?id=1V20LhoGIUvkKnXNyWFLciX48e9XTF0FD&sz=w1600" alt="Indigo Luna">
     </div>
 
-    <!-- ═══ PART 7 ═══ -->
+    <!-- ═══ PART 5 ═══ -->
     <div class="accordion">
         <div class="accordion-header" onclick="toggleAccordion(this)">
             <div class="accordion-title">
-                <span class="accordion-number">Part Seven</span>
+                <span class="accordion-number">Part Five</span>
                 <h2 class="accordion-heading">Real-World Application</h2>
             </div>
             <div style="display:flex;align-items:center;gap:15px;">
@@ -670,6 +715,11 @@
         <div class="accordion-content">
             <div class="accordion-body">
 
+                <div class="section-opener">
+                    <div class="section-opener-icon">🌱</div>
+                    <div class="section-opener-text">Practice into habit<strong>Choose two things to do this week</strong></div>
+                </div>
+
                 <div class="subsection">
                     <h3>From Learning to Leading: Your Action Plan</h3>
                     <p>Knowledge without application is just theory. Everything you have explored today only becomes real when you practise it with your team.</p>
@@ -678,22 +728,22 @@
                     </div>
 
                     <div class="question-card">
-                        <label class="question-label"><span class="question-number">15</span> Which communication skills will have the biggest impact on your team right now? (Tick all that apply)</label>
+                        <label class="question-label"><span class="question-number">12</span> Which communication skills will have the biggest impact on your team right now? (Tick all that apply)</label>
                         <div class="checklist">
                             <div class="checklist-item" onclick="toggleCheck(this)">
-                                <input type="checkbox" name="q15_transparency"><label><strong>Being more transparent</strong> about decisions and context</label>
+                                <input type="checkbox" name="q12_transparency"><label><strong>Being more transparent</strong> about decisions and context</label>
                             </div>
                             <div class="checklist-item" onclick="toggleCheck(this)">
-                                <input type="checkbox" name="q15_listening"><label><strong>Practising active listening</strong> at Level 2 or 3</label>
+                                <input type="checkbox" name="q12_listening"><label><strong>Practising active listening</strong> at Level 2 or 3</label>
                             </div>
                             <div class="checklist-item" onclick="toggleCheck(this)">
-                                <input type="checkbox" name="q15_questions"><label><strong>Asking better questions</strong> (open-ended, starting with "What" or "How")</label>
+                                <input type="checkbox" name="q12_questions"><label><strong>Asking better questions</strong> (open-ended, starting with "What" or "How")</label>
                             </div>
                             <div class="checklist-item" onclick="toggleCheck(this)">
-                                <input type="checkbox" name="q15_feedback"><label><strong>Giving clearer feedback</strong> using the SBI method</label>
+                                <input type="checkbox" name="q12_feedback"><label><strong>Giving clearer feedback</strong> using the SBI method</label>
                             </div>
                             <div class="checklist-item" onclick="toggleCheck(this)">
-                                <input type="checkbox" name="q15_conflict"><label><strong>Addressing conflict</strong> instead of avoiding it</label>
+                                <input type="checkbox" name="q12_conflict"><label><strong>Addressing conflict</strong> instead of avoiding it</label>
                             </div>
                         </div>
                     </div>
@@ -701,30 +751,26 @@
 
                 <div class="subsection">
                     <div class="question-card">
-                        <label class="question-label"><span class="question-number">16</span> Describe one specific conversation you will have this week where you will practise a new communication technique. What will you do differently?</label>
-                        <textarea name="q16_conversation" required placeholder="Example: In my one-on-one with Dewa on Tuesday, I will practise Level 2 listening by paraphrasing what he says before offering my thoughts..."></textarea>
+                        <label class="question-label"><span class="question-number">13</span> Is there someone on your team you owe feedback to — positive or developmental? Write their name and what you will say using SBI.</label>
+                        <textarea name="q13_feedback_owed" required placeholder="Name:&#10;Situation:&#10;Behaviour:&#10;Impact:"></textarea>
                     </div>
                     <div class="question-card">
-                        <label class="question-label"><span class="question-number">17</span> Is there someone on your team you owe feedback to — positive or developmental? Write their name and what you will say using SBI.</label>
-                        <textarea name="q17_feedback_owed" required placeholder="Name:&#10;Situation:&#10;Behaviour:&#10;Impact:"></textarea>
-                    </div>
-                    <div class="question-card">
-                        <label class="question-label"><span class="question-number">18</span> What communication mistake have you made in the past that you want to avoid repeating? What will you do differently next time?</label>
-                        <textarea name="q18_mistake" required placeholder="Be specific — what happened, and what is your plan?"></textarea>
+                        <label class="question-label"><span class="question-number">14</span> What communication mistake have you made in the past that you want to avoid repeating? What will you do differently next time?</label>
+                        <textarea name="q14_mistake" required placeholder="Be specific — what happened, and what is your plan?"></textarea>
                     </div>
                 </div>
 
                 <div class="subsection">
                     <h3>Final Reflection</h3>
                     <div class="slider-container">
-                        <label class="question-label" style="margin-bottom:20px;"><span class="question-number">19</span> How confident do you feel about your communication skills right now?</label>
+                        <label class="question-label" style="margin-bottom:20px;"><span class="question-number">15</span> How confident do you feel about your communication skills right now?</label>
                         <div class="slider-labels"><span>Not confident</span><span>Very confident</span></div>
-                        <input type="range" min="1" max="5" value="3" class="slider" name="q19_confidence" id="confidenceSlider" oninput="updateSlider(this.value)" required>
+                        <input type="range" min="1" max="5" value="3" class="slider" name="q15_confidence" id="confidenceSlider" oninput="updateSlider(this.value)" required>
                         <div class="slider-value"><span id="sliderVal">3</span> / 5</div>
                     </div>
                     <div class="question-card">
-                        <label class="question-label"><span class="question-number">20</span> What is the most important insight you are taking away from this module?</label>
-                        <textarea name="q20_insight" required placeholder="What surprised you? What will you remember and use?"></textarea>
+                        <label class="question-label"><span class="question-number">16</span> What is the most important insight you are taking away from this module?</label>
+                        <textarea name="q16_insight" required placeholder="What surprised you? What will you remember and use?"></textarea>
                     </div>
                 </div>
 
@@ -813,9 +859,8 @@
         const starters = { 1: 'I tend to operate at Level 1 (Internal Listening). ', 2: 'I tend to operate at Level 2 (Focused Listening). ', 3: 'I tend to operate at Level 3 (Global Listening). ' };
         if (q4.value === '' || /^I tend to operate at Level/.test(q4.value)) {
             q4.value = starters[level];
-            q4.focus();
             q4.setSelectionRange(q4.value.length, q4.value.length);
-            localStorage.setItem('module2_q4', q4.value);
+            localStorage.setItem('module2_' + q4.name, q4.value);
         }
     }
 
@@ -835,9 +880,8 @@
         const q12 = document.getElementById('q12');
         if (q12.value === '' || /^My default conflict style is/.test(q12.value)) {
             q12.value = 'My default conflict style is ' + style + '. ';
-            q12.focus();
             q12.setSelectionRange(q12.value.length, q12.value.length);
-            localStorage.setItem('module2_q12', q12.value);
+            localStorage.setItem('module2_' + q12.name, q12.value);
         }
     }
 
